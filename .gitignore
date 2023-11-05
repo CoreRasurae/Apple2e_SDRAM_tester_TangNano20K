@@ -1,0 +1,6 @@
+impl/gwsynthesis/**
+!impl/pnr/device.cfg
+impl/pnr/**
+impl/temp
+*.gprj.user
+**/*~
