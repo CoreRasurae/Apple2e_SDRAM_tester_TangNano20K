@@ -1,0 +1,19 @@
+IO_LOC "clk" 4;       // crystal 27Mhz
+IO_PORT "clk" IO_TYPE=LVCMOS33 PULL_MODE=NONE;
+
+IO_LOC "rst" 88;
+IO_PORT "rst" PULL_MODE=DOWN;
+
+// UART through USB-C port
+IO_LOC "uart_rx_i" 70;
+IO_LOC "uart_tx_o" 69;
+IO_PORT "uart_rx_i" IO_TYPE=LVCMOS33;
+IO_PORT "uart_tx_o" IO_TYPE=LVCMOS33;
+
+// 2 LEDs for debug
+IO_LOC "blueLed" 17;
+IO_PORT "blueLed" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+IO_LOC "greenLed" 16;
+IO_PORT "greenLed" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
+IO_LOC "redLed" 15;
+IO_PORT "redLed" IO_TYPE=LVCMOS33 PULL_MODE=UP DRIVE=8;
