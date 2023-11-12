@@ -85,33 +85,33 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
 	.we(we)                      // cpu/chipset requests write
   );
 
-  logic rst112M;
+  logic rst14M;
   AsyncMetaReset meatastableRst(
-     .clk(clk112M),
+     .clk(clk14M),
      .rstIn(rst),
-     .rstOut(rst112M)
+     .rstOut(rst14M)
   );
 
-  logic ready;
-  startupDelayUnit startupUnit (
-     .start(locked && rst112M),
-     .clk112M(clk112M),
+  logic ready = 1'b0;
+  startupDelayUnit #(.CLK(13982000.0)) startupUnit (
+     .start(locked && rst14M),
+     .clk14M(clk14M),
      .sdram_init_n(init_n),
      .sdram_ready(ready)
   );
 
-  logic ready14M;
+  /*logic ready14M;
   MetaSignal meatastableReady(
      .clk(clk14M),
      .signalIn(ready),
      .signalOut(ready14M)
-  );
+  );*/
 
   logic db_reading;
   logic db_error;
   dumbWriteReader dumbWRUnit(
      .clk14M(clk14M),
-     .ready14M(ready14M),
+     .ready14M(ready),
      .sdram_aux(aux),
      .sdram_din(din),
      .sdram_dout(dout),
