@@ -1,0 +1,227 @@
+<?xml version="1" encoding="UTF-8"?>
+<GAO_CONFIG>
+    <Version>3.0</Version>
+    <Mode>Standard</Mode>
+    <AoCore index="0" sample_clock="clk" trig_type="0" storage_depth="8192" window_num="1" capture_amount="4096" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="true">
+        <SignalList>
+            <Bus name="serialProtoINST/statesCMD[2:0]">
+                <Signal>serialProtoINST/statesCMD[2]</Signal>
+                <Signal>serialProtoINST/statesCMD[1]</Signal>
+                <Signal>serialProtoINST/statesCMD[0]</Signal>
+            </Bus>
+            <Bus name="serialProtoINST/statesINNER[3:0]">
+                <Signal>serialProtoINST/statesINNER[3]</Signal>
+                <Signal>serialProtoINST/statesINNER[2]</Signal>
+                <Signal>serialProtoINST/statesINNER[1]</Signal>
+                <Signal>serialProtoINST/statesINNER[0]</Signal>
+            </Bus>
+            <Bus name="serialProtoINST/nibbleIndex[1:0]">
+                <Signal>serialProtoINST/nibbleIndex[1]</Signal>
+                <Signal>serialProtoINST/nibbleIndex[0]</Signal>
+            </Bus>
+            <Signal>tx_dataValid</Signal>
+            <Signal>tx_active</Signal>
+            <Signal>tx_done</Signal>
+            <Bus name="tx_dataByte[7:0]">
+                <Signal>tx_dataByte[7]</Signal>
+                <Signal>tx_dataByte[6]</Signal>
+                <Signal>tx_dataByte[5]</Signal>
+                <Signal>tx_dataByte[4]</Signal>
+                <Signal>tx_dataByte[3]</Signal>
+                <Signal>tx_dataByte[2]</Signal>
+                <Signal>tx_dataByte[1]</Signal>
+                <Signal>tx_dataByte[0]</Signal>
+            </Bus>
+            <Signal>cmdWriteSDRAM</Signal>
+            <Signal>cmdWriteFull</Signal>
+            <Signal>cmdWriteStrobe</Signal>
+            <Signal>cmdReadStrobe</Signal>
+            <Signal>cmdNoWordAvailable</Signal>
+            <Bus name="dout27M[15:0]">
+                <Signal>dout27M[15]</Signal>
+                <Signal>dout27M[14]</Signal>
+                <Signal>dout27M[13]</Signal>
+                <Signal>dout27M[12]</Signal>
+                <Signal>dout27M[11]</Signal>
+                <Signal>dout27M[10]</Signal>
+                <Signal>dout27M[9]</Signal>
+                <Signal>dout27M[8]</Signal>
+                <Signal>dout27M[7]</Signal>
+                <Signal>dout27M[6]</Signal>
+                <Signal>dout27M[5]</Signal>
+                <Signal>dout27M[4]</Signal>
+                <Signal>dout27M[3]</Signal>
+                <Signal>dout27M[2]</Signal>
+                <Signal>dout27M[1]</Signal>
+                <Signal>dout27M[0]</Signal>
+            </Bus>
+        </SignalList>
+        <Triggers>
+            <Trigger index="0">
+                <SignalList>
+                    <Bus restorename="serialProtoINST/statesINNER[3:0]">
+                        <Signal>serialProtoINST/statesINNER[3]</Signal>
+                        <Signal>serialProtoINST/statesINNER[2]</Signal>
+                        <Signal>serialProtoINST/statesINNER[1]</Signal>
+                        <Signal>serialProtoINST/statesINNER[0]</Signal>
+                    </Bus>
+                </SignalList>
+            </Trigger>
+            <Trigger index="1">
+                <SignalList>
+                    <Bus restorename="serialProtoINST/statesCMD[2:0]">
+                        <Signal>serialProtoINST/statesCMD[2]</Signal>
+                        <Signal>serialProtoINST/statesCMD[1]</Signal>
+                        <Signal>serialProtoINST/statesCMD[0]</Signal>
+                    </Bus>
+                </SignalList>
+            </Trigger>
+            <Trigger index="2"/>
+            <Trigger index="3"/>
+            <Trigger index="4"/>
+            <Trigger index="5"/>
+            <Trigger index="6"/>
+            <Trigger index="7"/>
+            <Trigger index="8"/>
+            <Trigger index="9"/>
+            <Trigger index="10"/>
+            <Trigger index="11"/>
+            <Trigger index="12"/>
+            <Trigger index="13"/>
+            <Trigger index="14"/>
+            <Trigger index="15"/>
+        </Triggers>
+        <MatchUnits>
+            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="0000" value1="0000" trigger="0"/>
+            <MatchUnit index="1" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="001" value1="000" trigger="1"/>
+            <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="4" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="5" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="6" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="7" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="8" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="9" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="10" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="11" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="12" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="13" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="14" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="15" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+        </MatchUnits>
+        <Expressions type="Static">
+            <Expression>M0&amp;M1</Expression>
+        </Expressions>
+    </AoCore>
+    <AoCore index="1" sample_clock="clk8M" trig_type="0" storage_depth="1024" window_num="1" capture_amount="1024" implementation="0" trigger_pos="0" module_name="top" force_trigger_by_falling_edge="false">
+        <SignalList>
+            <Signal>simpleArbiter/fifoDataEmpty</Signal>
+            <Signal>simpleArbiter/fifoDataFull</Signal>
+            <Signal>simpleArbiter/fifoReadStrobe</Signal>
+            <Signal>simpleArbiter/fifoWriteStrobe</Signal>
+            <Signal>simpleArbiter/writeSDRAM</Signal>
+            <Signal>simpleArbiter/sdramWE</Signal>
+            <Bus name="simpleArbiter/state[2:0]">
+                <Signal>simpleArbiter/state[2]</Signal>
+                <Signal>simpleArbiter/state[1]</Signal>
+                <Signal>simpleArbiter/state[0]</Signal>
+            </Bus>
+            <Bus name="din[7:0]">
+                <Signal>din[7]</Signal>
+                <Signal>din[6]</Signal>
+                <Signal>din[5]</Signal>
+                <Signal>din[4]</Signal>
+                <Signal>din[3]</Signal>
+                <Signal>din[2]</Signal>
+                <Signal>din[1]</Signal>
+                <Signal>din[0]</Signal>
+            </Bus>
+            <Bus name="dout[15:0]">
+                <Signal>dout[15]</Signal>
+                <Signal>dout[14]</Signal>
+                <Signal>dout[13]</Signal>
+                <Signal>dout[12]</Signal>
+                <Signal>dout[11]</Signal>
+                <Signal>dout[10]</Signal>
+                <Signal>dout[9]</Signal>
+                <Signal>dout[8]</Signal>
+                <Signal>dout[7]</Signal>
+                <Signal>dout[6]</Signal>
+                <Signal>dout[5]</Signal>
+                <Signal>dout[4]</Signal>
+                <Signal>dout[3]</Signal>
+                <Signal>dout[2]</Signal>
+                <Signal>dout[1]</Signal>
+                <Signal>dout[0]</Signal>
+            </Bus>
+            <Bus name="addr[20:0]">
+                <Signal>addr[20]</Signal>
+                <Signal>addr[19]</Signal>
+                <Signal>addr[18]</Signal>
+                <Signal>addr[17]</Signal>
+                <Signal>addr[16]</Signal>
+                <Signal>addr[15]</Signal>
+                <Signal>addr[14]</Signal>
+                <Signal>addr[13]</Signal>
+                <Signal>addr[12]</Signal>
+                <Signal>addr[11]</Signal>
+                <Signal>addr[10]</Signal>
+                <Signal>addr[9]</Signal>
+                <Signal>addr[8]</Signal>
+                <Signal>addr[7]</Signal>
+                <Signal>addr[6]</Signal>
+                <Signal>addr[5]</Signal>
+                <Signal>addr[4]</Signal>
+                <Signal>addr[3]</Signal>
+                <Signal>addr[2]</Signal>
+                <Signal>addr[1]</Signal>
+                <Signal>addr[0]</Signal>
+            </Bus>
+            <Signal>aux</Signal>
+        </SignalList>
+        <Triggers>
+            <Trigger index="0">
+                <SignalList>
+                    <Signal>fifoReadStrobe</Signal>
+                </SignalList>
+            </Trigger>
+            <Trigger index="1"/>
+            <Trigger index="2"/>
+            <Trigger index="3"/>
+            <Trigger index="4"/>
+            <Trigger index="5"/>
+            <Trigger index="6"/>
+            <Trigger index="7"/>
+            <Trigger index="8"/>
+            <Trigger index="9"/>
+            <Trigger index="10"/>
+            <Trigger index="11"/>
+            <Trigger index="12"/>
+            <Trigger index="13"/>
+            <Trigger index="14"/>
+            <Trigger index="15"/>
+        </Triggers>
+        <MatchUnits>
+            <MatchUnit index="0" enabled="1" match_type="1" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="1" value1="0" trigger="0"/>
+            <MatchUnit index="1" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="2" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="3" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="4" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="5" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="6" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="7" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="8" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="9" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="10" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="11" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="12" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="13" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="14" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+            <MatchUnit index="15" enabled="0" match_type="0" counter_enable="0" counter_width="2" counter="2" countinuous="0" func="0" value0="" value1=""/>
+        </MatchUnits>
+        <Expressions type="Static">
+            <Expression>M0</Expression>
+        </Expressions>
+    </AoCore>
+    <GAO_ID>1110110110101011</GAO_ID>
+</GAO_CONFIG>

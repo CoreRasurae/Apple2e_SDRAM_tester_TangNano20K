@@ -17,6 +17,7 @@ module uart_rx
    input        i_Clock,
    input        i_Rx_Serial,
    output       o_Rx_DV,
+   output  reg  o_Rx_Active,
    output [7:0] o_Rx_Byte
    );
     
@@ -57,7 +58,10 @@ module uart_rx
             r_Bit_Index   <= 0;
              
             if (r_Rx_Data == 1'b0)          // Start bit detected
+            begin
               r_SM_Main <= s_RX_START_BIT;
+              o_Rx_Active <= 1'b1;
+            end
             else
               r_SM_Main <= s_IDLE;
           end
@@ -73,7 +77,10 @@ module uart_rx
                     r_SM_Main     <= s_RX_DATA_BITS;
                   end
                 else
+                begin
+                  o_Rx_Active <= 1'b0;
                   r_SM_Main <= s_IDLE;
+                end
               end
             else
               begin
@@ -122,6 +129,7 @@ module uart_rx
               end
             else
               begin
+                o_Rx_Active   <= 1'b0;
                 r_Rx_DV       <= 1'b1;
                 r_Clock_Count <= 0;
                 r_SM_Main     <= s_CLEANUP;

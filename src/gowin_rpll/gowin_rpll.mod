@@ -7,7 +7,7 @@
 
 -mod_name Gowin_rPLL1
 -file_name gowin_rpll
--path /home/lpnm/Documents/Electronica/Sipeed/Tang_Nano_20K/SDRAM_tester_apple2e/Apple2e_SDRAM_tester/src/gowin_rpll/
+-path /home/lpnm/Documents/Electronica/Sipeed/Tang_Nano_20K/SDRAM_tester_apple2e/Apple2e_SDRAM_tester_TangNano20K/src/gowin_rpll/
 -type PLL
 -rPll true
 -file_type vlg
@@ -18,7 +18,7 @@
 -fbdiv_sel 29
 -dyn_odiv_sel false
 -odiv_sel 8
--dyn_sdiv_sel 8
+-dyn_sdiv_sel 14
 -dyn_da_en true
 -rst_sig false
 -rst_sig_p false

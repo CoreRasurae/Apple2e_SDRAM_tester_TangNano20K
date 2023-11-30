@@ -5,16 +5,20 @@
 //Part Number: GW2AR-LV18QN88C8/I7
 //Device: GW2AR-18
 //Device Version: C
-//Created Time: Wed Nov 29 17:20:24 2023
+//Created Time: Mon Nov 27 13:01:42 2023
 
 //Change the instance name and port connections to the signal names
 //--------Copy here to design--------
 
-    Gowin_rPLL1 your_instance_name(
-        .clkout(clkout_o), //output clkout
-        .lock(lock_o), //output lock
-        .clkoutd(clkoutd_o), //output clkoutd
-        .clkin(clkin_i) //input clkin
-    );
+	FIFO_HS_SerialIn your_instance_name(
+		.Data(Data_i), //input [15:0] Data
+		.WrClk(WrClk_i), //input WrClk
+		.RdClk(RdClk_i), //input RdClk
+		.WrEn(WrEn_i), //input WrEn
+		.RdEn(RdEn_i), //input RdEn
+		.Q(Q_o), //output [15:0] Q
+		.Empty(Empty_o), //output Empty
+		.Full(Full_o) //output Full
+	);
 
 //--------Copy end-------------------

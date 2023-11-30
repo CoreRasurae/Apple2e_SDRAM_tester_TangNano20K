@@ -4,7 +4,7 @@
  *
  * Copyright (C) 2023 Luís Mendes <luis.p.mendes@gmail.com>
  */
-module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst, 
+module top(clk, uart_rx_i, uart_tx_o, leds, rst, 
            O_sdram_clk, O_sdram_cke, O_sdram_cas_n, O_sdram_ras_n, O_sdram_cs_n, O_sdram_wen_n,
            O_sdram_ba, O_sdram_addr, IO_sdram_dq, O_sdram_dqm);
   input  clk;
@@ -13,7 +13,7 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
   input  rst;
 
   //Leds
-  output blueLed, greenLed, redLed;
+  output [4:0] leds;
 
   //SDRAM
   output O_sdram_clk;
@@ -31,18 +31,19 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
 
   logic [7:0] rx_byte;
   logic rx_dataValid; 
+  logic rx_active;
   logic tx_dataValid;
   logic tx_active;
   logic tx_done;
-  logic  [7:0] dataByte;
+  logic [7:0] tx_dataByte;
   logic  valid = 1'b0;
-  logic redLedState = 1'b0;
 
   logic [3:0] decodedNibble;
   logic decodeError;
 
   logic locked;
   logic clk112M;
+  logic clk8M;
   logic clk;
 
   assign IO_sdram_dq[31:16] = 16'bZZZZZZZZZZZZZZZZ;
@@ -50,7 +51,7 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
   Gowin_rPLL1 myrPLL (
      .clkout(clk112M), //output clkout
      .lock(locked), //output lock
-     .clkoutd(clk14M), //output clkoutd
+     .clkoutd(clk8M), //output clkoutd
      .clkin(clk) //input clkin
   );
 
@@ -63,7 +64,7 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
  
   assign O_sdram_cke = 1'b1;
   assign O_sdram_clk = clk112M;
-  sdram mySDRAM (
+  sdram apple2eSDRAMController (
 	.sd_data(IO_sdram_dq[15:0]), // 16 bit bidirectional data bus
 	.sd_addr(O_sdram_addr),      // 11 bit multiplexed address bus
 	.sd_dqm(O_sdram_dqm),        // two byte masks
@@ -76,7 +77,7 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
 	// cpu/chipset interface
 	.init_n(init_n),	         // init signal after FPGA config to initialize RAM
 	.clk(clk112M),               // sdram is accessed at up to 128MHz
-	.clkref(clk14M),             // reference clock to sync to
+	.clkref(clk8M),             // reference clock to sync to
 	
 	.din(din),		             // data input from chipset/cpu
 	.dout(dout),		         // data output to chipset/cpu
@@ -85,40 +86,19 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
 	.we(we)                      // cpu/chipset requests write
   );
 
-  logic rst14M;
+  logic rst8M;
   AsyncMetaReset meatastableRst(
-     .clk(clk14M),
+     .clk(clk8M),
      .rstIn(rst),
-     .rstOut(rst14M)
+     .rstOut(rst8M)
   );
 
   logic ready = 1'b0;
-  startupDelayUnit #(.CLK(13982000.0)) startupUnit (
-     .start(locked && rst14M),
-     .clk14M(clk14M),
+  startupDelayUnit #(.CLK(7989785.7)) startupUnit (
+     .start(locked && rst8M),
+     .clk8M(clk8M),
      .sdram_init_n(init_n),
      .sdram_ready(ready)
-  );
-
-  /*logic ready14M;
-  MetaSignal meatastableReady(
-     .clk(clk14M),
-     .signalIn(ready),
-     .signalOut(ready14M)
-  );*/
-
-  logic db_reading;
-  logic db_error;
-  dumbWriteReader dumbWRUnit(
-     .clk14M(clk14M),
-     .ready14M(ready),
-     .sdram_aux(aux),
-     .sdram_din(din),
-     .sdram_dout(dout),
-     .sdram_addr(addr),
-     .sdram_we(we),
-     .mach_reading(db_reading),
-     .mach_error(db_error)
   );
 
   hexDecoderUnit nibbleDec (
@@ -132,38 +112,90 @@ module top(clk, uart_rx_i, uart_tx_o, blueLed, greenLed, redLed, rst,
      .i_Clock(clk),
      .i_Rx_Serial(uart_rx_i),
      .o_Rx_DV(rx_dataValid),
+     .o_Rx_Active(rx_active),
      .o_Rx_Byte(rx_byte)
   );
 
   uart_tx #(.CLKS_PER_BIT(c_CLKS_PER_BIT)) UART_TX_INST (
      .i_Clock(clk),
      .i_Tx_DV(tx_dataValid),
-     .i_Tx_Byte(dataByte),
+     .i_Tx_Byte(tx_dataByte),
      .o_Tx_Active(tx_active),
      .o_Tx_Serial(uart_tx_o),
      .o_Tx_Done(tx_done)
   );
 
-    always @(posedge clk)
-    begin
-       tx_dataValid = 1'b0;
-       if (rx_dataValid && !valid)
-       begin
-          dataByte = rx_byte + 8'b01;
-          valid = 1'b1;
-          redLedState = ~redLedState;
-       end
+  logic  [7:0] din27M;
+  logic [15:0] dout27M;
+  logic [20:0] addr27M;
+  logic        aux27M;
+  logic cmdWriteSDRAM;
+  logic cmdWriteFull;
+  logic cmdWriteStrobe;  
+  logic cmdReadStrobe;
+  logic cmdNoWordAvailable;
+  logic serialError;
 
-       if (valid && !tx_active && !tx_done)
-       begin
-          tx_dataValid = 1'b1;
-       end
+  SerialProtocol serialProtoINST (
+     .clk(clk), 
+     .dataValidRxStrobe(rx_dataValid), 
+     .dataRx(rx_byte), 
+     .dataToTx(tx_dataByte), 
+     .dataTxStart(tx_dataValid),
+     .dataTxActive(tx_active),
+     .dataTxDone(tx_done),
+     .decodedNibble(decodedNibble), 
+     .nibbleError(decodeError),
+     .sdramReady(ready), 
+     .sdramNibbleSel(aux27M), 
+     .cmdDatabyteOut(din27M),
+     .cmdNoWordAvailable(cmdNoWordAvailable),
+     .cmdWordIn(dout27M),
+     .cmdReadStrobe(cmdReadStrobe), 
+     .cmdAddress(addr27M), 
+     .cmdWriteStrobe(cmdWriteStrobe),
+     .cmdWriteSDRAM(cmdWriteSDRAM27M),
+     .serialError(serialError)
+  );
 
-       if (tx_done)
-       begin
-         valid = 1'b0;
-       end
-    end
+  logic fifoReadStrobe;
+  logic fifoDataEmpty;
+  logic fifoDataFull;
+  logic writeSDRAM;
+  FIFO_HS_SerialOut FifoSerialOut (
+     .Data({addr27M, din27M, aux27M, cmdWriteSDRAM27M}), //input [29:0] Data
+     .WrClk(clk), //input WrClk
+     .RdClk(clk8M), //input RdClk
+     .WrEn(cmdWriteStrobe), //input WrEn
+     .RdEn(fifoReadStrobe), //input RdEn
+     .Q({addr, din, aux, writeSDRAM}), //output [30:0] Q
+     .Empty(fifoDataEmpty), //output Empty
+     .Full(cmdWriteFull) //output Full
+  );
 
-    assign redLed = redLedState;
+  FIFO_HS_SerialIn FifoSerialIn (
+     .Data(dout), //input [15:0] Data
+     .WrClk(clk8M), //input WrClk
+     .RdClk(clk), //input RdClk
+     .WrEn(fifoWriteStrobe), //input WrEn
+     .RdEn(cmdReadStrobe),   //input RdEn
+     .Q(dout27M), //output [15:0] Q
+     .Empty(cmdNoWordAvailable), //output Empty
+     .Full(fifoDataFull) //output Full
+  );
+
+  logic simpleArbiterError;
+  SimpleArbiterFifoToSDRAM simpleArbiter (
+     .clk8M(clk8M),
+     .fifoDataEmpty(fifoDataEmpty), 
+     .fifoDataFull(fifoDataFull), 
+     .fifoReadStrobe(fifoReadStrobe), 
+     .fifoWriteStrobe(fifoWriteStrobe),
+     .writeSDRAM(writeSDRAM),
+     .sdramReady(ready),
+     .sdramWE(we),
+     .simpleArbiterError(simpleArbiterError)
+  );
+
+  assign leds = {!ready, !simpleArbiterError, !serialError, !tx_active, !rx_active};
 endmodule

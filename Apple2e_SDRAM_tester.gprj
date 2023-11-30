@@ -7,7 +7,10 @@
     <FileList>
         <File path="src/AsyncMetaReset.v" type="file.verilog" enable="1"/>
         <File path="src/MetaSignal.v" type="file.verilog" enable="1"/>
-        <File path="src/dumbWriteReader.sv" type="file.verilog" enable="1"/>
+        <File path="src/SerialProtocol.sv" type="file.verilog" enable="1"/>
+        <File path="src/SimpleArbiterFifoToSDRAM.sv" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs/fifo_hs_serialIn.v" type="file.verilog" enable="1"/>
+        <File path="src/fifo_hs/fifo_hs_serialOut.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/hexDecoderUnit.sv" type="file.verilog" enable="1"/>
         <File path="src/hexEncoderUnit.sv" type="file.verilog" enable="1"/>
@@ -17,8 +20,7 @@
         <File path="src/uart_rx.v" type="file.verilog" enable="1"/>
         <File path="src/uart_tx.v" type="file.verilog" enable="1"/>
         <File path="src/Nano20.cst" type="file.cst" enable="1"/>
-        <File path="src/Apple2e_SDRAM_tester.rao" type="file.gao" enable="0"/>
-        <File path="src/Apple2e_SDRAM_tester_Startup.rao" type="file.gao" enable="0"/>
-        <File path="src/Apple2e_SDRAM_tester_dumbController.rao" type="file.gao" enable="1"/>
+        <File path="src/clockTimings.sdc" type="file.sdc" enable="1"/>
+        <File path="src/Apple2e_SDRAM_tester_serialProto.rao" type="file.gao" enable="0"/>
     </FileList>
 </Project>

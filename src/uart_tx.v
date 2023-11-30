@@ -129,7 +129,7 @@ module uart_tx
         // Stay here 1 clock
         s_CLEANUP :
           begin
-            r_Tx_Done <= 1'b1;
+            r_Tx_Done <= 1'b0;
             r_SM_Main <= s_IDLE;
           end
          

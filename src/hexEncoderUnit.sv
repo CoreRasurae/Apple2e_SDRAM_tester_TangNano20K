@@ -6,10 +6,10 @@
  */
 module hexEncoderUnit (nibble, nibbleChar);
 //input clk;
-input [3:0] nibble;
+input  [3:0] nibble;
 output [7:0] nibbleChar;
 
-logic [7:0] encodedChar;
+logic  [7:0] encodedChar;
 
 always @ *
 begin

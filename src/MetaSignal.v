@@ -10,8 +10,8 @@ reg a = 1'b0, b = 1'b0;
 
 always @(posedge clk)
 begin
-    a = signalIn;
-    b = a;
+    a <= signalIn;
+    b <= a;
 end
 
 assign signalOut = b;
