@@ -6,15 +6,9 @@ from time import sleep
 from random import seed
 from random import randint
 import argparse
-from skimage.io import imread
-import PIL
-from PIL import Image
-
-def imresize(im, res):
-   return np.array(Image.fromarray(im).resize(res, PIL.Image.LANCZOS)) #PIL.Image.LANCZOS, PIL.Image.BICUBIC 
 
 class SDRAMSerialClient():
-   def __init__(self, serialPort='/dev/ttyUSB1', baudRate=1500000, timeout = 100e-3):
+   def __init__(self, serialPort='/dev/ttyUSB1', baudRate=1500000, timeout = 1):
       self.ser = serial.Serial(serialPort, baudRate, timeout = timeout)
       self.pageSize = 256
       self.buffers = 4
