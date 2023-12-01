@@ -1,5 +1,5 @@
-module SimpleArbiterFifoToSDRAM(clk8M, fifoDataEmpty, fifoDataFull, fifoReadStrobe, fifoWriteStrobe, writeSDRAM, sdramReady, sdramWE, simpleArbiterError);
-input  logic clk8M;
+module SimpleArbiterFifoToSDRAM(clk2M, fifoDataEmpty, fifoDataFull, fifoReadStrobe, fifoWriteStrobe, writeSDRAM, sdramReady, sdramWE, simpleArbiterError);
+input  logic clk2M;
 input  logic fifoDataEmpty;   //fifoDataEmpty   - Nothing to read from serial protocol
 input  logic fifoDataFull;    //fifoDataFull    - Cannot send more data to the serial protocol
 output logic fifoReadStrobe;  //fifoReadStrobe  - Toggle for 1 cycle to issue a FIFO read from the serial protocol
@@ -18,7 +18,7 @@ localparam s_ARB_SDRAM_WRITE = 3'b110;
 
 logic [2:0] state = s_ARB_WAIT_INIT;
 
-always @(posedge clk8M)
+always @(posedge clk2M)
 begin
    fifoReadStrobe = 1'b0;
    fifoWriteStrobe = 1'b0;

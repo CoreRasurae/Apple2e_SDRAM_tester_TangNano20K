@@ -11,6 +11,9 @@
         <File path="src/SimpleArbiterFifoToSDRAM.sv" type="file.verilog" enable="1"/>
         <File path="src/fifo_hs/fifo_hs_serialIn.v" type="file.verilog" enable="1"/>
         <File path="src/fifo_hs/fifo_hs_serialOut.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_clkdiv/gowin_clkdiv_2.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_clkdiv/gowin_clkdiv_3_5.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_clkdiv/gowin_clkdiv_5.v" type="file.verilog" enable="1"/>
         <File path="src/gowin_rpll/gowin_rpll.v" type="file.verilog" enable="1"/>
         <File path="src/hexDecoderUnit.sv" type="file.verilog" enable="1"/>
         <File path="src/hexEncoderUnit.sv" type="file.verilog" enable="1"/>

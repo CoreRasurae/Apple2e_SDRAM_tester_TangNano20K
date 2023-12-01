@@ -70,7 +70,7 @@ localparam LF = 8'h0a;
 
 logic [2:0]  statesCMD     = 3'b000;
 logic [3:0]  statesINNER   = 4'b0000;
-logic [4:0]  attemptsIndex = 5'b00000;
+logic [6:0]  attemptsIndex = 7'b0000000;
 logic [1:0]  nibbleIndex   = 2'b00;
 logic [7:0]  nibbleChar;
 logic [7:0]  cmdReceived   = "Z";
@@ -729,7 +729,7 @@ begin
                unique if (dataRx == CR || dataRx == LF)
                begin
                   cmdWriteStrobe = 1'b1; //Issue the first SDRAM read
-                  attemptsIndex <= 5'b00001;
+                  attemptsIndex <= 7'b0000001;
                   statesINNER <= s_INNER_11;
                end
                else
@@ -748,17 +748,17 @@ begin
             begin
                //Give an extra cycle between the read strobe and the actual data read
                cmdReadStrobe <= 1'b1;
-               attemptsIndex = 5'b00000;
+               attemptsIndex = 7'b0000000;
             end
-            else if (attemptsIndex == 5'b00000)
+            else if (attemptsIndex == 7'b0000000)
             begin
                nibbleIndex <= 2'b00;
                statesINNER <= s_INNER_12;
             end
             else
             begin
-               if (attemptsIndex < 5'b11111)
-                  attemptsIndex = attemptsIndex + 5'b00001;
+               if (attemptsIndex < 7'b1111111)
+                  attemptsIndex = attemptsIndex + 7'b0000001;
                else
                begin
                   statesINNER <= s_INNER_00;

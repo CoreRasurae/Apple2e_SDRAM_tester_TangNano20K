@@ -5,10 +5,10 @@
  * Copyright (C) 2023 Luís Mendes <luis.p.mendes@gmail.com>
  */
 module startupDelayUnit #(parameter CLK = 111857000.0)
-(start, clk8M, sdram_init_n, sdram_ready);
+(start, clk, sdram_init_n, sdram_ready);
 
 input start;
-input clk8M;
+input clk;
 output sdram_init_n;
 output sdram_ready;
 
@@ -24,7 +24,7 @@ localparam COUNTER_ZERO_200MS  = {BITS_200MS{1'b0}};
 
 logic [BITS_200MS-1:0] counter = COUNTER_ZERO_200MS;
 
-always @(posedge clk8M)
+always @(posedge clk)
 begin
 if (start) begin
    if (started) begin

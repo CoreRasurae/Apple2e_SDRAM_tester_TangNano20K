@@ -42,17 +42,43 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
   logic decodeError;
 
   logic locked;
-  logic clk112M;
-  logic clk8M;
+  logic clk140M;
+  logic clk28M;
+  logic clk14M;
+  logic clk7M;
+  logic clk2M;
   logic clk;
 
   assign IO_sdram_dq[31:16] = 16'bZZZZZZZZZZZZZZZZ;
 
   Gowin_rPLL1 myrPLL (
-     .clkout(clk112M), //output clkout
+     .clkout(clk140M), //output clkout
      .lock(locked), //output lock
-     .clkoutd(clk8M), //output clkoutd
      .clkin(clk) //input clkin
+  );
+
+  Gowin_CLKDIV_5 div5 (
+     .clkout(clk28M),
+     .hclkin(clk140M), 
+     .resetn(locked)
+  );
+
+  Gowin_CLKDIV_2 div2_14M (
+     .clkout(clk14M), //output clkout
+     .hclkin(clk28M), //input hclkin
+     .resetn(locked) //input resetn
+  );
+
+  Gowin_CLKDIV_2 div2_7M (
+     .clkout(clk7M), //output clkout
+     .hclkin(clk14M), //input hclkin
+     .resetn(locked) //input resetn
+  );
+
+  Gowin_CLKDIV_3_5 div3_5 (
+     .clkout(clk2M), //output clkout
+     .hclkin(clk7M), //input hclkin
+     .resetn(locked) //input resetn
   );
 
   logic        init_n;
@@ -63,7 +89,7 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
   logic        we = 1'b0;
  
   assign O_sdram_cke = 1'b1;
-  assign O_sdram_clk = clk112M;
+  assign O_sdram_clk = clk28M;
   sdram apple2eSDRAMController (
 	.sd_data(IO_sdram_dq[15:0]), // 16 bit bidirectional data bus
 	.sd_addr(O_sdram_addr),      // 11 bit multiplexed address bus
@@ -76,8 +102,8 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
 
 	// cpu/chipset interface
 	.init_n(init_n),	         // init signal after FPGA config to initialize RAM
-	.clk(clk112M),               // sdram is accessed at up to 128MHz
-	.clkref(clk8M),             // reference clock to sync to
+	.clk(clk28M),               // sdram is accessed at up to 128MHz
+	.clkref(clk2M),             // reference clock to sync to
 	
 	.din(din),		             // data input from chipset/cpu
 	.dout(dout),		         // data output to chipset/cpu
@@ -86,17 +112,17 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
 	.we(we)                      // cpu/chipset requests write
   );
 
-  logic rst8M;
+  logic rst2M;
   AsyncMetaReset meatastableRst(
-     .clk(clk8M),
+     .clk(clk2M),
      .rstIn(rst),
-     .rstOut(rst8M)
+     .rstOut(rst2M)
   );
 
   logic ready = 1'b0;
-  startupDelayUnit #(.CLK(7989785.7)) startupUnit (
-     .start(locked && rst8M),
-     .clk8M(clk8M),
+  startupDelayUnit #(.CLK(2000000.0)) startupUnit (
+     .start(locked && rst2M),
+     .clk(clk2M),
      .sdram_init_n(init_n),
      .sdram_ready(ready)
   );
@@ -129,6 +155,7 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
   logic [15:0] dout27M;
   logic [20:0] addr27M;
   logic        aux27M;
+  logic cmdWriteSDRAM27M;
   logic cmdWriteSDRAM;
   logic cmdWriteFull;
   logic cmdWriteStrobe;  
@@ -159,13 +186,14 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
   );
 
   logic fifoReadStrobe;
+  logic fifoWriteStrobe;
   logic fifoDataEmpty;
   logic fifoDataFull;
   logic writeSDRAM;
   FIFO_HS_SerialOut FifoSerialOut (
      .Data({addr27M, din27M, aux27M, cmdWriteSDRAM27M}), //input [29:0] Data
      .WrClk(clk), //input WrClk
-     .RdClk(clk8M), //input RdClk
+     .RdClk(clk2M), //input RdClk
      .WrEn(cmdWriteStrobe), //input WrEn
      .RdEn(fifoReadStrobe), //input RdEn
      .Q({addr, din, aux, writeSDRAM}), //output [30:0] Q
@@ -175,7 +203,7 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
 
   FIFO_HS_SerialIn FifoSerialIn (
      .Data(dout), //input [15:0] Data
-     .WrClk(clk8M), //input WrClk
+     .WrClk(clk2M), //input WrClk
      .RdClk(clk), //input RdClk
      .WrEn(fifoWriteStrobe), //input WrEn
      .RdEn(cmdReadStrobe),   //input RdEn
@@ -186,7 +214,7 @@ module top(clk, uart_rx_i, uart_tx_o, leds, rst,
 
   logic simpleArbiterError;
   SimpleArbiterFifoToSDRAM simpleArbiter (
-     .clk8M(clk8M),
+     .clk2M(clk2M),
      .fifoDataEmpty(fifoDataEmpty), 
      .fifoDataFull(fifoDataFull), 
      .fifoReadStrobe(fifoReadStrobe), 
